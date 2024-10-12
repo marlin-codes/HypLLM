@@ -1,5 +1,5 @@
 
-## Hyperbolic Low-rank Fine-tuning for LLMs
+## Hyperbolic Fine-tuning for LLMs
 
 ### 1.Introduction
    Large language models (LLMs) have demonstrated remarkable performance on various tasks. However, it remains an open question whether the default Euclidean space is the most suitable choice for embedding tokens in LLMs. In this study, we first investigate the non-Euclidean characteristics of LLMs. 
@@ -22,7 +22,7 @@
 
 
 
-### 3.Core Code for Hyperbolic low-rank fine-tuning LLMs
+### 3.Core Code
 
 ```python
 x = x.to(self.lora_A.weight.dtype)
