@@ -1,5 +1,5 @@
 
-## Hyperbolic Fine-tuning for LLMs
+## Hyperbolic Low-rank Fine-tuning for LLMs
 
 ### 1.Introduction
    Large language models (LLMs) have demonstrated remarkable performance on various tasks. However, it remains an open question whether the default Euclidean space is the most suitable choice for embedding tokens in LLMs. In this study, we first investigate the non-Euclidean characteristics of LLMs. 
@@ -13,7 +13,11 @@
 | ![Math 10K Token Frequency](./utils/results/figs_frequency/math_10k/math_10k_token_frequency_distribution.png) | ![Math 50K Token Frequency](./utils/results/figs_frequency/math_50k/math_50k_token_frequency_distribution.png) | ![MAWPS Token Frequency](./utils/results/figs_frequency/mawps/MAWPS_token_frequency_distribution.png) |
 | ![OpenBookQA Token Frequency](./utils/results/figs_frequency/openbookqa/OpenBookQA_token_frequency_distribution.png) | ![SVAMP Token Frequency](./utils/results/figs_frequency/SVAMP/SVAMP_token_frequency_distribution.png) | ![WinoGrande Token Frequency](./utils/results/figs_frequency/winogrande/WinoGrande_token_frequency_distribution.png) |
 
-### 3. Frequency Distribution w.r.t. Norm
+### 3. Hierarchical examples in Token Embedding
+
+![img.png](./figs/numbers.png)
+
+### 4. Frequency Distribution w.r.t. Norm
 
 | ![AQuA Frequency vs Norm](./utils/results/figs_frequency_norm/AQuA/AQuA_binned_frequency_vs_norm.png)  | ![BoolQ Frequency vs Norm](./utils/results/figs_frequency_norm/boolq/boolq_binned_frequency_vs_norm.png)  | ![GSM8K Frequency vs Norm](./utils/results/figs_frequency_norm/gsm8k/GSM8K_binned_frequency_vs_norm.png)  |
 |:-----------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|
@@ -22,7 +26,7 @@
 
 
 
-### 3.Core Code
+### 5.Core Code for Hyperbolic low-rank fine-tuning LLMs
 
 ```python
 x = x.to(self.lora_A.weight.dtype)
@@ -47,3 +51,7 @@ x = x * self.scaling
 result += x
 
 ```
+
+### 6. Running Scripts
+
+To be updated in `example` folder.
