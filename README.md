@@ -1,5 +1,8 @@
 
-## Hyperbolic Fine-tuning for LLMs
+## [Hyperbolic Fine-tuning for LLMs (PDF)](https://arxiv.org/abs/2410.04010)
+
+PyTorch Implementation for [Hyperbolic Fine-tuning for LLMs](https://arxiv.org/abs/2410.04010).
+
 
 ### 1.Introduction
    Large language models (LLMs) have demonstrated remarkable performance on various tasks. However, it remains an open question whether the default Euclidean space is the most suitable choice for embedding tokens in LLMs. In this study, we first investigate the non-Euclidean characteristics of LLMs. 
@@ -55,3 +58,16 @@ result += x
 ### 6. Running Scripts
 
 To be updated in `example` folder.
+
+### BibTex
+```
+@misc{yang2024hyperbolic,
+      title={Hyperbolic Fine-tuning for Large Language Models}, 
+      author={Menglin Yang and Aosong Feng and Bo Xiong and Jihong Liu and Irwin King and Rex Ying},
+      year={2024},
+      eprint={2410.04010},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2410.04010}, 
+}
+```
