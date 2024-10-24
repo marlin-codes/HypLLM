@@ -18,10 +18,14 @@ PyTorch Implementation for [Hyperbolic Fine-tuning for LLMs](https://arxiv.org/a
 
 ### 3. Hierarchical examples in Token Embedding
 
+<div align="center">
+    <img src="./figs/number_hierarchy.png" alt="img.png">
+</div>
+
+
 ![img.png](./figs/numbers.png)
 
 ### 4. Frequency Distribution w.r.t. Norm
-
 | ![AQuA Frequency vs Norm](./utils/results/figs_frequency_norm/AQuA/AQuA_binned_frequency_vs_norm.png)  | ![BoolQ Frequency vs Norm](./utils/results/figs_frequency_norm/boolq/boolq_binned_frequency_vs_norm.png)  | ![GSM8K Frequency vs Norm](./utils/results/figs_frequency_norm/gsm8k/GSM8K_binned_frequency_vs_norm.png)  |
 |:-----------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|
 | ![Math 10K Frequency vs Norm](./utils/results/figs_frequency_norm/math_10k/math_10k_binned_frequency_vs_norm.png) | ![Math 50K Frequency vs Norm](./utils/results/figs_frequency_norm/math_50k/math_50k_binned_frequency_vs_norm.png) | ![MAWPS Frequency vs Norm](./utils/results/figs_frequency_norm/mawps/MAWPS_binned_frequency_vs_norm.png) |
