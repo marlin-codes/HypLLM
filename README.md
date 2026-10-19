@@ -3,6 +3,23 @@
 
 PyTorch Implementation for [Hyperbolic Fine-tuning for LLMs](https://arxiv.org/abs/2410.04010).
 
+### Licensing proposal (draft, not effective)
+
+This branch contains a [licensing proposal for full-text review](LICENSING.md):
+free academic research, evaluation, reproducibility, and company-internal
+research/evaluation without external services; separately agreed licensing for
+commercial production, customer operational delivery, and commercial services,
+only for material and rights that the individual using **marlin-codes** can license.
+
+**No new license is effective and no covered material has been approved.**
+Publishing or merging this draft does not activate its terms. Existing Apache/MIT
+and other valid grants remain intact, including any commercial permissions.
+All currently published `peft/` material is excluded from the proposed new
+restrictions; the existing core's permissive headers require review. See the
+[provenance and scope inventory](docs/licensing/PROVENANCE.md) and
+[third-party notices](THIRD_PARTY_NOTICES.md). Data, figures, model weights and
+outputs require separate treatment and receive no blanket grant here.
+
 
 ### 1.Introduction
 Large language models (LLMs) have demonstrated remarkable performance across various tasks. However, it remains an open question whether the default Euclidean space is the most suitable choice for LLMs. In this study, we investigate the geometric characteristics of LLMs, focusing specifically on tokens and their embeddings. Our findings reveal that token frequency follows a power-law distribution, where high-frequency tokens (e.g., the, that ) constitute the minority, while low-frequency tokens (e.g., apple, dog) constitute the majority. Furthermore, high-frequency tokens cluster near the origin, whereas low-frequency tokens are positioned farther away in the embedding space. Additionally, token embeddings exhibit hyperbolic characteristics, indicating a latent tree-like structure within the embedding space. Motivated by these observations, we propose HypLoRA, an efficient fine-tuning approach that operates in hyperbolic space to exploit these underlying hierarchical structures better. HypLoRA performs low-rank adaptation directly in hyperbolic space, thereby preserving hyperbolic modeling capabilities throughout the fine-tuning process. Extensive experiments across various base models and reasoning benchmarks, specifically arithmetic and commonsense reasoning tasks, demonstrate that HypLoRA substantially improves LLM performance.
