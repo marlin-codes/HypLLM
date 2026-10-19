@@ -1,0 +1,272 @@
+path,baseline_git_blob,category,observed_notice,proposed_scope_status,comparison_to_peft_v0.15.2
+README.md,bd498ac336897c63838a9113808fde0d8d13aa89,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+commonsense_evaluate.py,227168733484528325a7220c275a40ca354effb7,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+commonsense_evaluate_gemma.py,57a3e6c0e9151e53e6896480a6eb6a02989b5189,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+commonsense_evaluate_qwen.py,0133b386191a8d339e09293d1b2fb150cf617631,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+dataset/AQuA/AQuA.json,a7aa56386dce14a3f19e68dd31c0e04e6e732774,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AQuA/aqua_1.json,3f0681c327041bb0cc04a0ccf1357062fc7f65c3,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AQuA/test.json,731fbb456f7a93bb4121125de09c4adcf42e5dab,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AQuA/updated_level1.json,48cf15b858785a3c04aecc1a247212cfa6d942ca,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/ARC-Challenge/test.json,9540685439144200b5a7e48dab9ca4655be2af09,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/ARC-Challenge/train.json,d7e080b04bff9fd16dd85455fb04481807a088d8,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/ARC-Easy/test.json,6c0d30aaedaeca148df6bcd7aaacf7c31e6ad70f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/ARC-Easy/train.json,488a8e5e5bbbd7a630ebbfe07a1fd91b7d9d8c9b,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AddSub/AddSub.json,3774017520b77333af378094558bbf79ac096f7b,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AddSub/addsub_1.json,6e61725cf072875aec3e303ee3886a1cb393e963,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/AddSub/test.json,f3996cdf4159b4e1e4b6768865a4db72105f4e2f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/MultiArith/MultiArith.json,8b720d2f5b6658913bb3160fb0554aa57173ef3f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/MultiArith/multiarith_1.json,f9e4ee0ff3938ca35f1446de578b9e7ada7a798b,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/MultiArith/test.json,08e996c6cd8c633cc977f5c50709a8bbfc8fadff,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SVAMP/SVAMP.json,e2b2f9e8db9f9c002d2bff2cb450a4abb40fa61b,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SVAMP/svamp_1.json,0ee1b845e16c91fa8a3ed0f9a9f647c0f8a93e35,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SVAMP/test.json,98b8f1872db596f8aaff2c95d1d698a9fa13b94f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SVAMP/updated_level1.json,878fa92eee8d284e7b46870210cbfdd315250353,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SingleEq/SingleEq.json,8b32f23d02da13dc7705cc2fcb9448b9f374447c,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SingleEq/singleeq_1.json,d53e1c7effae5937f75b8a8e06233d273c1f6e87,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/SingleEq/test.json,cce7a868400323e30e2094a15d482c1aa743dbb0,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/boolq/test.json,6d7edb0a8e8a6566b546ccf0d98d24e48db3fdf3,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/boolq/train.json,87a7beee26b49f81c450641ef2ff84f55611321f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/gsm8k/gsm8k.json,aae0c66bbcecbe8aadf1a7edbb2a383e1bc55084,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/gsm8k/gsm8k_1.json,1ce4157c974f2d4ee8d8d55c60ea208b457f9dc6,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/gsm8k/test.json,57a7a08e10e12e975e1f972d2b8125c0d4c722b1,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/gsm8k/updated_level1.json,975a4224ccb210ceaacfd2079895bcdd23eddd87,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/hellaswag/test.json,183c4920415f83ba4b793c4873a33e7e10bd1be5,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/hellaswag/train.json,ca68dc85fc2a2f73c9b1b8b0823cc41a8f669718,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mathqa/test.json,4395ded7d91bd4fb1192ba3981f6ef00ccc88570,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mawps/data_process.py,da2730afc45117ebec120084dc386e9c88818190,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+dataset/mawps/test.json,eca473c5b5d398acbae0b84ede833bbbccd63add,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mawps/testset.json,93d3fb9829c19b941d00af34c4c2dfeafc22c67a,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mawps/trainset.json,30ce34399859c115cb391ac96fd009f71f5ba98f,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mawps/updated_level1.json,be0362a224cf8d87f26845feb5242e0d4fbc39d7,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/mawps/validset.json,73715d914e135605d1af32f1fe7523bb3138bdb9,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/openbookqa/test.json,a6e69676104bcb77237388c3b5a3f0dcbb81d1e2,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/openbookqa/train.json,75bcd5eb9f5e77a3796c05e6bb38f169d19563fc,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/piqa/test.json,f7a1c260692ef31796d4763cb6334f316a754fed,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/piqa/train.json,44326ba946f8bd645bfa7a189e619d29b5bc17e5,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/social_i_qa/test.json,eadf221799ca394367b144c0f86ee0436db409d2,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/social_i_qa/train.json,bd524129d80efdfabc8476bbedc4f41b400cfda0,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/winogrande/test.json,21257263593dd4d00546e1918c88ca0f357b08ad,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+dataset/winogrande/train.json,0b56375ac6b4464fa97abfb72812f15c772ba305,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+evaluate.py,c3128050739baf8664997a319114b0bbcc2dac98,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+figs/number_hierarchy.png,c7884abe07fa122d5746cb03b7b389e0142c9211,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+figs/numbers.png,7f3eb36a3ee0455f108286ca536ac4a6dd0e82ac,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+finetune_gemma.py,5a49cda65bb9444b0b5127773eadbda1cbbf3444,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+finetune_gemma7b.py,2107c9329deb9c2c18c372fc5803ab39d63be7e2,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+finetune_llama3.py,0ba5f7683e54b5283483d0abd49c62460774f7d3,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+finetune_qwen.py,d4740b592ac72c0917ed0081bee1dbb67cb8e346,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+ft-training_set/commonsense_170k.json,529e426b33d4cdb1d0c4a275a1a7245ad081fd91,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+ft-training_set/math_10k.json,27dba77d6ed80aa118d78fbafa5cecd651f6d463,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+ft-training_set/math_50k.json,61fcf3e08fc90a922be320441019d6022e25f5d0,data,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+peft/__init__.py,51a42558d283dacdab0f95d93389da93470bc8ad,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/auto.py,613f67c707e344eab1a5281565fb0fdb3d827d01,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/config.py,5208f620beabde3c2e2c476ffa6322aa9bdf8198,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/helpers.py,3246e74993bb53403a4fed4010977e993fbe2e7a,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/import_utils.py,6aa69a85190bc91bb8bd0649fa80806d7209c584,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/mapping.py,a92b28f8589cda791d5887a141f95e1408d42b34,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/mapping_func.py,279ce499d1e857d68d963467c01b5b272a3369e6,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/mixed_model.py,815b5c2e82563d11f694e5ade160f0ac6c994fb6,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/optimizers/__init__.py,0e8821f45db8e2dcf8f26fd8b38f8f90a28f5c09,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/optimizers/lorafa.py,e241a1e59cf8cf1ad43d0228f0d5fd566aa27a0d,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/optimizers/loraplus.py,0c4bd7d1e0b238bba692055f050e60b740f58107,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/peft_model.py,146d6c60931018945667c4fe0803eece3c054830,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/__init__.py,bb38230bf0dc3d063d2dc52917c2c32232fbc585,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/_buffer_dict.py,62b81147c2c35410e4fcbea70a3596ffef001c26,peft-existing-permissive-notices,MIT / Meta header,excluded-existing-rights-review,byte-identical
+peft/tuners/adalora/__init__.py,64d5f3e5ce6ba3c5873f01ee88f4c4766e1fde75,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adalora/bnb.py,fef3d25e65c459d20855e49832aabe56881734c0,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adalora/config.py,004c26b0fe5ecf88212bd11de062baec2f10de83,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adalora/gptq.py,bed1a0a7ca8dabb9d068bcf2470a97e34ec348fe,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adalora/layer.py,9079b42d317cd24d24026f20a6a5f5013beb4f0f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/adalora/model.py,3c52ecdf2f9117d073998d58f4b3510e0cfbf58a,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adaption_prompt/__init__.py,68882a222625eedc770d28816a3a0646964739bb,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adaption_prompt/config.py,52a405cebe821d68ba446d1a3e7a844c07b135de,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adaption_prompt/layer.py,e15439de0507db5d1fc00189260eb97906bb4759,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/adaption_prompt/model.py,420d674df2f35ef5f3db6a2eae7d8cc2f5600676,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/adaption_prompt/utils.py,3058c4ef2fd5350e33e87b1746aaf3b9b6d5ef01,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/boft/__init__.py,c84b8358da8fc52d3f332c195f22b8b9620c665f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/boft/config.py,bedd915664c9d9970cd1da91978415e32b173008,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/boft/fbd/__init__.py,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,peft-existing-permissive-notices,empty file,excluded-existing-rights-review,byte-identical
+peft/tuners/boft/layer.py,299695cdfae1df91567c00185ea0174536ae1a1e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/boft/model.py,94d094a28831e8fb1abea082555bf3cce0ad51f0,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/bone/__init__.py,f131e8c17d3d11fa06c11a473cf2a54075cf443a,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/bone/config.py,2f6915aa20f52147b01fc0632543013ea358df26,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/bone/layer.py,fc07cc496dfd66071f6f7d47986a302915a0e848,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/bone/model.py,93d0ef9c9865c73012dc1145838059955965a7e3,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/cpt/__init__.py,fcd4de85989168ad6834712679c805cba39c1df1,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/cpt/config.py,8d7c0cd52e984a8600cf85c8bb133982a25aef8a,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/cpt/model.py,934a3b7928c125bd433441f36cf4b26de15b535f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/fourierft/__init__.py,dfe3f5d89e36123eefef7fc6e675c6b80bd8d44c,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/fourierft/config.py,b8e354a207f4b2af6fad1c89017d6c889f47bf39,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/fourierft/layer.py,548c132e2d2ce4af1c85012e5aefdc24bc100b11,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/fourierft/model.py,fcadda0726e5bd8eadda9419ac1558811c89d82f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/hra/__init__.py,8f5f6a54435d0fcaa1bd275c623168b5491f2d9e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/hra/config.py,9e6d87cc17c3ba003eac963467bb1253725ebe10,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/hra/layer.py,408006049ab8b32d820f019102cbee5358afe9af,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/hra/model.py,6b519af62136dcffb08ed4eb262af39aed5623ca,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/ia3/__init__.py,21cab4d6d8a6437766f395e90079ce6ecd9e4f26,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/ia3/bnb.py,628e3ce7229528a0b3157da349b2b34153573c51,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/ia3/config.py,1c4161e5ed97998017b800535d4315c66c9d14cd,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/ia3/layer.py,45ed6ae6d4a87071a4d01a920513d4abdeb3132d,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/ia3/model.py,4d9487bd38f457db2c0ef77dc23377829c82d20e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/ln_tuning/__init__.py,8f90a8fb058cf75450b89166bf2e562f07b835fd,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/ln_tuning/config.py,127ee9017333bce22706b58b13701049244b1da9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/ln_tuning/layer.py,ca6950dc3e373d049bdcd1e016a6d357b6c63cde,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/ln_tuning/model.py,a4cc716866bfb8a26e63930d7dee05698bf0291e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/loha/__init__.py,70dd1545bbd49b0aaa5eafbde05f82b6a04c3d74,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/loha/config.py,00eacb1301cbe5ff4c5d0e4c17e1bfe66a1e4b4e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/loha/layer.py,876e34f826a062be342bf188f95c6c1885f0349d,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/loha/model.py,f6ea1724c074ec57d96cf19e6b130ada75dae3e9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lokr/__init__.py,f4fe0e92c6eacd0cc276ad3584230ea58ee4a8a6,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lokr/config.py,ea8a0e837fed6a7b54ffbe5e5f051916c231b3ff,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lokr/layer.py,195e5cd4c80a14397003317e1c4e001f5f7db939,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lokr/model.py,0212a173a83326696efb93d969eb32a2a888abcb,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/__init__.py,70036879d4f29b08c83791569b9b089ce3cee1fd,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/aqlm.py,81c7cdbb4ec45ed4d86fd08ab26f4baab64c0cab,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/awq.py,61eb487ad6756e1e31b612ec7a8e4649b860e4c5,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/bnb.py,5dd92061f13461988f3f16a81d6c49bc6e22027c,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/config.py,e45cb959dc6b40dd9dd0e1b08cac69fc94538a18,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/corda.py,d1b8ccd152d43d9c3c853409ffb8f9b78943890e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/dora.py,3aa66c2be594e23858f79cdc69a1e0c71cb929c2,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/eetq.py,b864d9fba2481bd00b238a099689cd6fe9cea57a,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/eva.py,1bc75453b1f35116ca307a3ea71c59d7d0efbf66,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/gptq.py,d16cfffb58bf1145ff3cae89228dd260384eee9f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/hqq.py,924acb2d4d254e61421de2a1e5efa391458c1ae9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/inc.py,e9fea9dc266a72cdf1368963df5b039691c22bdc,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/lora/layer.py,ff95e16dd68556e51f3d179577014dd2c5541b8a,peft-existing-permissive-notices,Apache-2.0 header; Microsoft MIT attribution,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/model.py,93ebc3c17825f4fca29fb7c4553e20398d4fc179,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/torchao.py,5e7240a053502bd2be450fd87187c756eeb0c17c,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/lora/tp_layer.py,01140d1c81c78801256dbf86985f500804c94dfb,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/lora/variants.py,de2c92faf02b017ec0057626754d16bd969d273b,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/lycoris_utils.py,c87c4647e32be5e6ebeef668c76b0b69f8611b31,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/mixed/__init__.py,2955d7258ddcf76b47b38fd6fd5ebeb3d1d6110c,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/mixed/model.py,3d3db065de4852b7ccde94c8a6d3e05274bbb611,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/multitask_prompt_tuning/__init__.py,fe692a93378254601753cc9b17218fdd5a92b8de,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/multitask_prompt_tuning/config.py,6cb279573559e4fa33a973aa35e052647a6ab8f9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/multitask_prompt_tuning/model.py,3350999eaef8f4f53b196a08a5a66e51475df617,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/oft/__init__.py,5df395090faa68e308c705ae3e640375dccb05b8,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/oft/config.py,36775f1aac50735bcf651e8ac97d2c4f09a0663f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/oft/layer.py,f49de20e8512d2a521e662f9a675c3b2b715cd39,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/oft/model.py,c72251cdc102b785b356532a665213c40535ef27,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/p_tuning/__init__.py,9195c0d75d3d11e752d0477b64edd79599bdaa01,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/p_tuning/config.py,a69c13db9c8a0f57a7daa7d312472625251fb6c8,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/p_tuning/model.py,ade2b1128158376c134441687803b85d444cfb96,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/poly/__init__.py,1c18933eba3fa44106ba9fa89ba34ecd12a2bed4,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/poly/config.py,040c1647a005fa59bc2046640dacdd4783aa11fe,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/poly/layer.py,5169d9ba72904898afdec7e032650c9fabbeec82,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/poly/model.py,30313cdabbc2aaac9621ccd418fa7720db5b8ce9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/poly/router.py,3dda3e75e35b6a9fbd5a2412815a0f05421f2ef4,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prefix_tuning/__init__.py,939f74d3f689f400dfdcb0139f4a2cf04cce52fc,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prefix_tuning/config.py,6eed77167a6e0b928e59e7e07fbf842c2d7a2d83,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prefix_tuning/model.py,ffd51892a3cc074406791f6bc7d1b088d25148e3,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prompt_tuning/__init__.py,c99ca6a26fea22e3d829c16eec378e82633e1b7b,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prompt_tuning/config.py,ee8ceb8d89ca09f44c5dd9b38f2c69a9d26705b9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/prompt_tuning/model.py,ce9b6bc409e0b26f846ea159464bdb953f8b0c4e,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/randlora/__init__.py,fbad681aeb0231254f5caae6b9bf9aa3a2c76ef0,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/randlora/bnb.py,84983643ef0d7aded1288160ca623a218eedcfbc,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/randlora/config.py,2eac42bf081156084a831a1a1e5ea91a898d6bfb,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/randlora/layer.py,40e5aeab6bdee483e3d4941844148f04ff590cb8,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/randlora/model.py,f0d7498d79cd20ca483ffaf6fed9ef70f00b48a5,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,absent-from-reference-tag
+peft/tuners/trainable_tokens/__init__.py,4aa7bf8e5fc4705cb7b190cee0de53ac8db89573,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/trainable_tokens/config.py,c4a93880db5345de93b98978e7fb02ef43cf14fa,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/trainable_tokens/layer.py,e5599547288fd2ca12967bcd5f953a912559c3ea,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/trainable_tokens/model.py,b6b797ebaf9f9aa7555d10983985b18b18535e57,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/tuners_utils.py,db7a8e63412162541907b34c7ac3cdb20ad26110,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/vblora/__init__.py,8e71a08461e8b7cb2fb5513a3bf908a4a98c0747,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/vblora/config.py,4b951c60f0d1d04f9f70b1a5c1bcb64a7790fea1,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/vblora/layer.py,ea34c22245a06c157006557b8c46c2a85fd04173,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/vblora/model.py,10c19c387d15846441d514494a18d7d487f1412b,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/vera/__init__.py,25c4a96619524bfdcd41a8f7df331533ba370782,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/vera/bnb.py,71d20e4b1163ab9cc93b7b33c2aa022ddd3eb11f,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/vera/config.py,5a8eaa4cdc27505bf3b3d6b9404f61eaa76f9494,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/vera/layer.py,725058d451ad54bb9a9736092c0ad6b32deaca52,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/vera/model.py,752e320ad5142ac6cb749307995bd635b692f447,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/xlora/__init__.py,6eae1f779b81e883f1dd64e3a4fca859391836c5,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/xlora/classifier.py,1ccf9edf9db3178ba9dc4dd3e07989251a676cb8,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/xlora/config.py,9cdb0f6e49f367c640ef4abf14e29b3b60f22fa6,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/tuners/xlora/layer.py,d66d5bcaadc7a36f71ac1c622fabff1a1ef3b1fd,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/tuners/xlora/model.py,c1aae7c9a561ad74696fbf124bdab200068eb408,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/utils/__init__.py,3e7fe6bb11d71b13062ce8dd388155cfcaebc2e8,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/constants.py,2b2ef2a75fcd3e351948e0354b6c69cef1916e31,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/hotswap.py,f05ecbd00ff1e44048d121a4399e36b300d7f3f7,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/utils/incremental_pca.py,de4a7c05174dc436f4c75965ef9585afb480183c,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/integrations.py,7d472870df2e85f6a4c22078a7194d5a060807d2,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/utils/loftq_utils.py,1019326e1e85d31b37f9973a7dffaaedf75c90aa,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,byte-identical
+peft/utils/merge_utils.py,b62a1abf1eefe17d596461c529925e47e378c563,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/other.py,04e91c3e262a98fc50e261828c7914dbc38fe862,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/peft_types.py,023fbaed78dc36b0baa4e538b117752fd5a0ceb9,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+peft/utils/save_and_load.py,7e14a7555d3449468605b6c739aac7130ae662eb,peft-existing-permissive-notices,Apache-2.0 header,excluded-existing-rights-review,differs-not-proof-of-originality
+requirements.txt,8ca0fc6902634d5d4bdc0f4078aa6ae8f1e07ab8,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/gemma-7b/eval.sh,ab6b68c97fc4359df2a495f14318d893b628f16c,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/gemma-7b/finetune.sh,46c84e6c2b8bf34f738a15e2d2a53df16b53a336,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/gemma3-4b/eval.sh,b818ec115aecf505b96cab555e9d5ead65457394,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/gemma3-4b/finetune.sh,7d7fde020ab0bb04b45362c4f96252f711ba5e60,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/llama3-8b/eval.sh,7fc9840b2714699990e91f34e6ce63d5b1a11062,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/llama3-8b/finetune.sh,13f1342acb4c5e56c971733edbd443188fb7bb2b,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/qwen2.5-7b/eval.sh,9146a3c889b72fc35d84c1fc4c379d1e68b302c2,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora/qwen2.5-7b/finetune.sh,44bb36d08a098ef49082ebd2a66bef1fdbd4ca01,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/gemma-7b/eval.sh,ca5af28e2307182eeebdd9f30908271a38b0402c,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/gemma-7b/finetune.sh,2479a2ae878408f71f31429bbe23b20443f9a8b2,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/gemma3-4b/eval.sh,b8194019d2aa2571fee7437f56b4a22a28792f94,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/gemma3-4b/finetune.sh,b9c7b2e33f876f6513a923fe6d675997973acc5c,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/llama3-8b/eval.sh,bc35c4b4a376b4df08d0842566ae1ba698a90348,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/llama3-8b/finetune.sh,99e1c77f49ac898db895cea4e21b8a165d794808,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/qwen2.5-7b/eval.sh,058a23da50bc58ebcae2ee6fbe9b64ee7ad49814,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/hyplora_simplified/qwen2.5-7b/finetune.sh,2fe6e2f51eb6dd512bde6e822b904557f7592b8f,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/gemma-7b/eval.sh,6808e70853793bb1a504f1b343c000eaeea118de,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/gemma-7b/finetune.sh,461f630b817dce95c210baf8341a3efb6651cf89,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/gemma3-4b/eval.sh,84aa1fbe118cd1c6c268dc43191dc73dd389266d,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/gemma3-4b/finetune.sh,200ac123291931578a50a3cd05c21ff96bb9ade3,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/llama3-8b/eval.sh,14636c9733833246857da2cc0309f00654033216,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/llama3-8b/finetune.sh,9c78663d5cc2da55fb2570a77a628f7daf5b26f3,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/qwen2.5-7b/eval.sh,9a6c2aa3805f35e9136c8070f6168dd1eaedbc63,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table3/lora/qwen2.5-7b/finetune.sh,dd2115f031dcdb8aef44b5a1931b8cee1669e2ea,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/gemma-7b/eval.sh,1f756bc057f97131902f2b6d58ff8c8700f18852,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/gemma-7b/finetune.sh,118d33a2830f0e733d1649859a5c697ba1b1dd13,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/gemma3-4b/eval.sh,d816fe3a5adbd6052735b9d8b47df566850da9d3,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/gemma3-4b/finetune.sh,24c80ec218674aea08be89f06cbb164f315030bd,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/llama3-8b/eval.sh,8bdf28011a612d8238703022be53aa7889a61f53,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/llama3-8b/finetune.sh,805c20e38c7924081e6ad6e11b7b588f890d28b1,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/qwen2.5-7b/eval.sh,90717d7a2b130cdd54c179fca281f40ce05ca807,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora/qwen2.5-7b/finetune.sh,70214cfdb76d6b7f5a9eb45518c16bbd8dbf6525,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/gemma-7b/eval.sh,948359c53f28e76e4da43f1d16ee41e8ed49a568,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/gemma-7b/finetune.sh,5f0d06b1335992223f4e35cf39921516ea664d6e,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/gemma3-4b/eval.sh,551b4d0dc3d1fc49fd827426828b986eebb3fed8,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/gemma3-4b/finetune.sh,582d7a0ae7179c8f6bde1eba87e95a839332da9f,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/llama3-8b/eval.sh,c1f995dbac61d2a40d542e9829161e06135d9336,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/llama3-8b/finetune.sh,301a2447b6723aa36a7363c9f6ec04c1f3906a42,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/qwen2.5-7b/eval.sh,d073e6e513ebb9bfea20b4ddd1670b13a2f646c1,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/hyplora_simplified/qwen2.5-7b/finetune.sh,17e9b1c678f8a54af24577ac7ef13d3b16a2c4c4,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/gemma-7b/eval.sh,661271d6c486a0a345ac3887cbcd7f6beaf550b1,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/gemma-7b/finetune.sh,b20116075e42b4bfe253fa000b1ff74661b8729b,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/gemma3-4b/eval.sh,154feaaa7b7679c70969c7d64e4f2fead12d52c8,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/gemma3-4b/finetune.sh,b45202b9c21a563b6a4f9cd706edf15d57facf72,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/llama3-8b/eval.sh,7ddc330796f03a1962ca2b702be06c6e751c0dc2,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/llama3-8b/finetune.sh,9c134117066e4bc590658fa6ed0cce208c136299,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/qwen2.5-7b/eval.sh,6cb7f46c179e16d2b7872df5af18d86e940f4120,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+scripts/table4/lora/qwen2.5-7b/finetune.sh,5c70dae9035c181150354e8b12bb257e536f11cb,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+setup.sh,c95f12fcb86e8b157d4e7390a95ac03174d40c4f,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+utils/delta_hyperbolicity.py,d5971d701caf99aa9d4fd254d8c6c766294e5934,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+utils/figs/delta/gemma-7b/gsm8k_delta_hyperbolicity.pdf,02970de877d802600cdbce5237b684efee774108,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/figs/delta/gemma-7b/gsm8k_delta_hyperbolicity.png,07511042c6d8354d6dcdc4e4fb06126684863438,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/group_norm_value.py,9eac853fcd768b01a7c76e67c06a88aaa34a286b,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+utils/results/figs_frequency/AQuA/AQuA_token_frequency_distribution.png,182ef35881b8101b3e450fcc12efdf72abf167ba,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/SVAMP/SVAMP_token_frequency_distribution.png,c14ad06c10136210b37ec8e65a52cb63619ce985,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/boolq/BoolQ_token_frequency_distribution.png,473ed18e587f02f1556bcb9231b726f35ea9e2bd,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/gsm8k/GSM8K_token_frequency_distribution.png,d06015a726f6f21c54d86b6552194e768a4fdfcb,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/math_10k/math_10k_token_frequency_distribution.png,f60f1ea033ae4f4d5cc3972a7568ff7821f5380f,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/math_50k/math_50k_token_frequency_distribution.png,55d38158986c011d891db7df61d9b764e350c2c0,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/mawps/MAWPS_token_frequency_distribution.png,13149c249ba9a49f0b241fd20fc79af334b21313,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/openbookqa/OpenBookQA_token_frequency_distribution.png,6b47483845f4aed0f22eb36afbc9d84e070458b3,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency/winogrande/WinoGrande_token_frequency_distribution.png,79274c926a83a7cc577a2038f09a09bc3d7de4a7,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/AQuA/AQuA_binned_frequency_vs_norm.png,457600e9207cf284e69f2811158cfb3091967166,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/SVAMP/SVAMP_binned_frequency_vs_norm.png,45e20d227c8bac03a124a9b9953aac7c02100928,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/boolq/boolq_binned_frequency_vs_norm.png,5f567ffaa6f0fa4b8a3ed43cd041c157a909422b,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/gsm8k/GSM8K_binned_frequency_vs_norm.png,d0a9c7fd22f793136b394e9a87d143b4a7523151,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/math_10k/math_10k_binned_frequency_vs_norm.png,c97c76005d259dd0351b0508c14dd020bb95db06,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/math_50k/math_50k_binned_frequency_vs_norm.png,8fd7412229b556504c2c9632cc18119d18e98d6a,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/mawps/MAWPS_binned_frequency_vs_norm.png,03b5c020470b19f6d0eb6a41b3757b2362ad73a4,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/openbookqa/openbookqa_binned_frequency_vs_norm.png,a7281f07ccaada4b370699559cd017bdaf032755,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/figs_frequency_norm/winogrande/winogrande_binned_frequency_vs_norm.png,eff7a99f2e3c406ebd1622961d13508b25794417,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/results/hyperbolic_manifold.png,2c9dd09a6775b8c5198f930913c49bdf0775d744,figure-or-output,no asset-specific grant established,excluded-separate-asset-review,not-applicable
+utils/run_delta_all.py,980f977ebdaafd2c7d61273abf43b56d72bd9d5e,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+utils/token_frequency_distribution.py,8299c0329a3cd2184ab0857c33df053d41254e7e,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
+utils/token_norm_plot.py,07042f364c93b9a567d2f9fe39e3dc23173963aa,unresolved-code-docs-config,no express license header found; provenance unresolved,excluded-pending-provenance-and-scope-approval,not-applicable
