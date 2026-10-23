@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
+from typing import Dict, Type, Union
 
 import torch
 from torch import nn
@@ -82,7 +82,7 @@ class LoHaModel(LycorisTuner):
     """
 
     prefix: str = "hada_"
-    layers_mapping: dict[type[torch.nn.Module], type[LoHaLayer]] = {
+    layers_mapping: Dict[Type[torch.nn.Module], Type[LoHaLayer]] = {
         torch.nn.Conv2d: Conv2d,
         torch.nn.Linear: Linear,
     }

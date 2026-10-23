@@ -52,7 +52,6 @@ from .config import LoraConfig
 from .eetq import dispatch_eetq
 from .gptq import dispatch_gptq
 from .hqq import dispatch_hqq
-from .inc import dispatch_inc
 from .layer import Conv2d, LoraLayer, dispatch_default
 from .torchao import dispatch_torchao
 from .tp_layer import dispatch_megatron
@@ -192,6 +191,16 @@ class LoraModel(BaseTuner):
         r = lora_config.rank_pattern.get(r_key, lora_config.r)
         alpha = lora_config.alpha_pattern.get(alpha_key, lora_config.lora_alpha)
 
+        k_init = None
+        lora_base_type = lora_config.lora_type.split("-")[0]
+
+        if lora_base_type == "hyplora":
+            k_init = float(lora_config.lora_type.split("-", 1)[1])
+            print(f"Specififed k value is {k_init}")
+        else:
+            k_init = None
+            print(f"Lora type: {lora_base_type}. So K is not valid here")
+
         kwargs = {
             "r": r,
             "lora_alpha": alpha,
@@ -205,6 +214,7 @@ class LoraModel(BaseTuner):
             "lora_bias": lora_config.lora_bias,
             "loaded_in_8bit": getattr(self.model, "is_loaded_in_8bit", False),
             "loaded_in_4bit": getattr(self.model, "is_loaded_in_4bit", False),
+            "k_init": k_init,
         }
         # for torchao merging, we need the get_apply_tensor_subclass from the quantization config
         try:
@@ -234,6 +244,7 @@ class LoraModel(BaseTuner):
                 use_rslora=lora_config.use_rslora,
                 use_dora=lora_config.use_dora,
                 lora_bias=lora_config.lora_bias,
+                k_init=k_init,
             )
         else:
             device_map = self.model.hf_device_map if hasattr(self.model, "hf_device_map") else None
@@ -273,7 +284,6 @@ class LoraModel(BaseTuner):
         for n, p in model.named_parameters():
             if self.prefix not in n:
                 p.requires_grad = False
- 
 
         for active_adapter in self.active_adapters:
             bias = self.peft_config[active_adapter].bias
@@ -335,7 +345,6 @@ class LoraModel(BaseTuner):
                 dispatch_awq,
                 dispatch_gptq,
                 dispatch_hqq,
-                dispatch_inc,
                 dispatch_torchao,
                 dispatch_megatron,
                 dispatch_default,
@@ -567,12 +576,7 @@ class LoraModel(BaseTuner):
         # if there is only one adapter, we can only use linear merging
         combination_type = "linear" if len(adapters) == 1 else combination_type
 
-        adapters_ranks: list[int] = [
-            # When allocating tensors for the new adapter, we need the maximum possible rank to not overflow
-            config.r if not config.rank_pattern else max(config.r, *config.rank_pattern.values())
-            for config in (self.peft_config[adapter] for adapter in adapters)
-        ]
-
+        adapters_ranks = [self.peft_config[adapter].r for adapter in adapters]
         if combination_type in ("linear", "ties", "dare_ties", "dare_linear", "magnitude_prune"):
             # all adapters ranks should be same, new rank is just this value
             if len(set(adapters_ranks)) != 1:
@@ -878,7 +882,6 @@ class LoraModel(BaseTuner):
                     new_adapter = target.active_adapters[:]
 
         self.active_adapter = new_adapter or []
-        self._delete_auxiliary_adapter(adapter_name, new_active_adapters=new_adapter)
 
     def merge_and_unload(
         self, progressbar: bool = False, safe_merge: bool = False, adapter_names: Optional[list[str]] = None

@@ -41,7 +41,7 @@ from transformers.utils import PushToHubMixin
 from peft.tuners.tuners_utils import BaseTuner, BaseTunerLayer
 from peft.utils.constants import DUMMY_MODEL_CONFIG
 from peft.utils.integrations import init_empty_weights
-from peft.utils.other import set_additional_trainable_modules
+from peft.utils.other import TrainableTokensWrapper
 
 from . import __version__
 from .config import PeftConfig
@@ -53,6 +53,7 @@ from .utils import (
     PeftType,
     TaskType,
     _get_batch_size,
+    _get_input_embeddings_name,
     _prepare_prompt_learning_config,
     _set_adapter,
     _set_trainable,
@@ -111,6 +112,7 @@ class PeftModel(PushToHubMixin, torch.nn.Module):
         low_cpu_mem_usage: bool = False,
     ) -> None:
         super().__init__()
+        self.modules_to_save = None
         self.active_adapter = adapter_name
         self.peft_type = peft_config.peft_type
         # These args are special PEFT arguments that users can pass. They need to be removed before passing them to
@@ -128,6 +130,8 @@ class PeftModel(PushToHubMixin, torch.nn.Module):
             ctx = init_empty_weights if low_cpu_mem_usage else nullcontext
             with ctx():
                 self.base_model = cls(model, {adapter_name: peft_config}, adapter_name)
+
+        self.set_additional_trainable_modules(peft_config, adapter_name)
 
         if hasattr(self.base_model, "_cast_adapter_dtype"):
             self.base_model._cast_adapter_dtype(
@@ -928,20 +932,8 @@ class PeftModel(PushToHubMixin, torch.nn.Module):
 
                 peft_config = _prepare_prompt_learning_config(peft_config, dict_config)
                 self._setup_prompt_encoder(adapter_name)
-                set_additional_trainable_modules(
-                    model=self.base_model,
-                    peft_config=peft_config,
-                    model_config=BaseTuner.get_model_config(self),
-                    adapter_name=adapter_name,
-                )
             elif peft_config.is_adaption_prompt:
                 self.base_model.add_adapter(adapter_name, peft_config)
-                set_additional_trainable_modules(
-                    model=self.base_model,
-                    peft_config=peft_config,
-                    model_config=BaseTuner.get_model_config(self),
-                    adapter_name=adapter_name,
-                )
             else:
                 self.peft_config[adapter_name] = peft_config
                 self.base_model.inject_adapter(
@@ -952,37 +944,69 @@ class PeftModel(PushToHubMixin, torch.nn.Module):
                 del self.peft_config[adapter_name]
             raise
 
-    def delete_adapter(self, adapter_name: str) -> None:
-        """
-        Deletes an existing adapter.
+        self.set_additional_trainable_modules(peft_config, adapter_name)
 
-        Args:
-            adapter_name (str): Name of the adapter to be deleted.
-        """
-        if adapter_name not in self.peft_config:
-            raise ValueError(f"Adapter {adapter_name} does not exist")
+    def set_additional_trainable_modules(self, peft_config, adapter_name):
+        if getattr(peft_config, "modules_to_save", None) is not None:
+            if self.modules_to_save is None:
+                self.modules_to_save = set(peft_config.modules_to_save)
+            else:
+                self.modules_to_save.update(peft_config.modules_to_save)
+            # this may add a new ModulesToSaveWrapper
+            _set_trainable(self, adapter_name, module_names=getattr(peft_config, "modules_to_save", None))
 
-        self.base_model.delete_adapter(adapter_name=adapter_name)
-        new_active_adapters = self.active_adapters
-        num_adapters = len(new_active_adapters)
-        # Note: PeftModel assumes that there is exactly one active adapter, so we should theoretically raise if
-        # num_adapters != 1. However, we have allowed this in the past (maybe inadvertently), so we let it slip and
-        # don't introduce a backwards incompatibility by raising an error.
-        if num_adapters == 1:
-            self.active_adapter = new_active_adapters[0]
+        if getattr(peft_config, "trainable_token_indices", None) is not None:
+            if isinstance(peft_config.trainable_token_indices, dict):
+                target_layers = peft_config.trainable_token_indices
+            else:
+                layer_name = _get_input_embeddings_name(self.model, "embed_tokens")
+                target_layers = {layer_name: peft_config.trainable_token_indices}
 
-    @property
-    def modules_to_save(self) -> Optional[set[str]]:
-        modules: set[str] = set()
-        for config in self.peft_config.values():
-            if getattr(config, "modules_to_save", None) is not None:
-                # modules_to_save can only be a sequence of str, not a str
-                modules.update(config.modules_to_save)
+            if self.modules_to_save:
+                for target_layer in target_layers:
+                    if target_layer in self.modules_to_save:
+                        raise ValueError(
+                            "The embedding layer is already marked to be trained fully, either specify "
+                            f'`modules_to_save=[..., "{target_layer}", ...]` or '
+                            f"`trainable_tokens={{'{target_layer}': x}}` but not both."
+                        )
 
-        if not modules:
-            # for backwards compatibility, as modules_to_save was initialized as None
-            return None
-        return modules
+            # we are not adding these module names to `self.modules_to_save` as this is strictly reserved for the
+            # `ModulesToSaveWrapper`.
+
+            for target_layer, token_indices in target_layers.items():
+                _set_trainable(
+                    self,
+                    adapter_name,
+                    module_names=[target_layer],
+                    strict_module_check=True,
+                    wrapper_cls=TrainableTokensWrapper,
+                    token_indices=token_indices,
+                )
+
+            # There might be the possibility that we have output weights that are tied to the input weights.
+            # In that case we will tie any module that wants tied weights to the token adapter to make sure that
+            # any modification is reflected in the tied layers as well.
+            model_config = BaseTuner.get_model_config(self)
+            if (
+                model_config.get("tie_word_embeddings", False)
+                # some models may be misconfigured to have weight tying enabled but don't define tied weights keys
+                and self.model._tied_weights_keys is not None
+                and isinstance(self.model.get_input_embeddings(), TrainableTokensWrapper)
+            ):
+                # the embedding layer is modified and we want weight tying.
+                module_keys = [".".join(n.split(".")[:-1]) for n in self.model._tied_weights_keys]
+
+                token_adapter = self.model.get_input_embeddings().token_adapter
+                _set_trainable(
+                    self,
+                    adapter_name,
+                    module_names=module_keys,
+                    strict_module_check=True,
+                    wrapper_cls=TrainableTokensWrapper,
+                    token_indices=token_adapter.token_indices[adapter_name],
+                    tied_adapter=self.model.get_input_embeddings().token_adapter,
+                )
 
     def get_layer_status(self) -> list[TunerLayerStatus]:
         """Get the status of each adapter layer in the model.
@@ -1459,7 +1483,13 @@ class PeftModelForSequenceClassification(PeftModel):
     def __init__(
         self, model: torch.nn.Module, peft_config: PeftConfig, adapter_name: str = "default", **kwargs
     ) -> None:
+        super().__init__(model, peft_config, adapter_name, **kwargs)
+
         classifier_module_names = ["classifier", "score"]
+        if self.modules_to_save is None:
+            self.modules_to_save = set(classifier_module_names)
+        else:
+            self.modules_to_save.update(classifier_module_names)
 
         if hasattr(peft_config, "modules_to_save"):
             if peft_config.modules_to_save is None:
@@ -1467,12 +1497,7 @@ class PeftModelForSequenceClassification(PeftModel):
             else:
                 peft_config.modules_to_save.extend(classifier_module_names)
 
-        # The modification of peft_config must happen before the init call as the `modules_to_save` information
-        # will be used to guard the target layer matching against matching `modules_to_save` layers. Only the
-        # config is relevant for this, the `modules_to_save` attribute can follow later.
-        super().__init__(model, peft_config, adapter_name, **kwargs)
-
-        if hasattr(peft_config, "modules_to_save"):
+        if self.modules_to_save:
             for name, _ in self.base_model.named_children():
                 if any(module_name in name for module_name in self.modules_to_save):
                     self.cls_layer_name = name
@@ -2253,16 +2278,22 @@ class PeftModelForTokenClassification(PeftModel):
         super().__init__(model, peft_config, adapter_name, **kwargs)
 
         classifier_module_names = ["classifier", "score"]
+        if self.modules_to_save is None:
+            self.modules_to_save = set(classifier_module_names)
+        else:
+            self.modules_to_save.update(classifier_module_names)
+
         if hasattr(peft_config, "modules_to_save"):
             if peft_config.modules_to_save is None:
                 peft_config.modules_to_save = classifier_module_names[:]
             else:
                 peft_config.modules_to_save.extend(classifier_module_names)
 
-        for name, _ in self.base_model.named_children():
-            if any(module_name in name for module_name in self.modules_to_save):
-                self.cls_layer_name = name
-                break
+        if self.modules_to_save is not None:
+            for name, _ in self.base_model.named_children():
+                if any(module_name in name for module_name in self.modules_to_save):
+                    self.cls_layer_name = name
+                    break
 
         # to make sure classifier layer is trainable; this may add a new ModulesToSaveWrapper
         _set_trainable(self, adapter_name, module_names=getattr(peft_config, "modules_to_save", None))
@@ -2469,6 +2500,11 @@ class PeftModelForQuestionAnswering(PeftModel):
         super().__init__(model, peft_config, adapter_name, **kwargs)
 
         qa_module_names = ["qa_outputs"]
+        if self.modules_to_save is None:
+            self.modules_to_save = set(qa_module_names)
+        else:
+            self.modules_to_save.update(qa_module_names)
+
         if hasattr(peft_config, "modules_to_save"):
             if peft_config.modules_to_save is None:
                 peft_config.modules_to_save = qa_module_names[:]

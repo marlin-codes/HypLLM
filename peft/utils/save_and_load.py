@@ -22,7 +22,6 @@ import torch
 from huggingface_hub import file_exists, hf_hub_download
 from huggingface_hub.errors import EntryNotFoundError, LocalEntryNotFoundError
 from safetensors.torch import load_file as safe_load_file
-from transformers.utils import http_user_agent
 
 from peft.mapping import PEFT_TYPE_TO_PREFIX_MAPPING
 
@@ -285,7 +284,7 @@ def _find_mismatched_keys(
         # see https://github.com/huggingface/transformers/blob/09f9f566de83eef1f13ee83b5a1bbeebde5c80c1/src/transformers/modeling_utils.py#L3858-L3864
         if (state_dict[key].shape[-1] == 1) and (state_dict[key].numel() * 2 == tensor.numel()):
             # This skips size mismatches for 4-bit weights. Two 4-bit values share an 8-bit container, causing size
-            # differences. Without matching with module type or parameter type it seems like a practical way to detect
+            # differences. Without matching with module type or paramter type it seems like a practical way to detect
             # valid 4bit weights.
             continue
 
@@ -510,9 +509,6 @@ def load_peft_weights(model_id: str, device: Optional[str] = None, **hf_hub_down
             if hf_hub_download_kwargs.get("subfolder", None) is not None
             else weights_name
         )
-
-    if "user_agent" not in hf_hub_download_kwargs:
-        hf_hub_download_kwargs["user_agent"] = http_user_agent()
 
     if os.path.exists(os.path.join(path, SAFETENSORS_WEIGHTS_NAME)):
         filename = os.path.join(path, SAFETENSORS_WEIGHTS_NAME)

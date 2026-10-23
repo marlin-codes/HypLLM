@@ -77,8 +77,6 @@ class LycorisLayer(BaseTunerLayer):
         # Tuner info
         self._disable_adapters = False
         self.merged_adapters = []
-        # flag to enable/disable casting of input to weight dtype during forward call
-        self.cast_input_dtype_enabled = True
 
     @property
     @abstractmethod
@@ -436,4 +434,3 @@ class LycorisTuner(BaseTuner):
                     new_adapter = target.active_adapters[:]
 
         self.active_adapter = new_adapter or []
-        self._delete_auxiliary_adapter(adapter_name, new_active_adapters=new_adapter)

@@ -1,488 +1,420 @@
-"""
-Unified Commonsense Evaluation Script
-
-Supports all models:
-- LLaMA-7B, LLaMA-13B, BLOOM-7B, GPT-j-6B (legacy)
-- Qwen2.5-7B-Instruct-1M, Qwen2.5-7B-Instruct
-- gemma-3-1b-it, gemma-3-4b-it, gemma-7b, gemma-7b-it
-- Meta-Llama-3-8B-Instruct
-"""
-
+import argparse
 import copy
 import json
 import os
+import random
 import re
-import sys
-import argparse
 
+import numpy as np
 import torch
-
-sys.path.insert(0, os.path.join(os.getcwd(), "peft/src/"))
+import transformers
 from peft import PeftModel
 from tqdm import tqdm
-from transformers import (
-    GenerationConfig,
-    LlamaTokenizer,
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    Gemma3ForConditionalGeneration
-)
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, Gemma3ForCausalLM
+
+
+HF_TOKEN = os.environ.get("HF_TOKEN")
+SEED = 42
+SUPPORTED_MODELS = {
+    "Meta-Llama-3-8B-Instruct",
+    "Qwen2.5-7B-Instruct-1M",
+    "gemma-3-4b-it",
+}
+SUPPORTED_DATASETS = {
+    "boolq",
+    "piqa",
+    "social_i_qa",
+    "hellaswag",
+    "winogrande",
+    "ARC-Challenge",
+    "ARC-Easy",
+    "openbookqa",
+}
+
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(SEED)
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+transformers.set_seed(SEED)
 
 if torch.cuda.is_available():
-    device = "cuda"
+    DEVICE = "cuda"
+elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+    DEVICE = "mps"
 else:
-    device = "cpu"
+    DEVICE = "cpu"
 
-try:
-    if torch.backends.mps.is_available():
-        device = "mps"
-except:
-    pass
-
-
-# =============================================================================
-# Prompt Templates
-# =============================================================================
-
-def generate_prompt_legacy(instruction, input_text=None):
-    """For LLaMA-7B, LLaMA-13B, BLOOM-7B, GPT-j-6B"""
-    if input_text:
-        return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
-
-                ### Instruction:
-                {instruction}
-
-                ### Input:
-                {input_text}
-
-                ### Response:
-                """
-    else:
-        return f"""Below is an instruction that describes a task. Write a response that appropriately completes the request.
-
-                ### Instruction:
-                {instruction}
-
-                ### Response:
-                """
-
-
-def generate_prompt_qwen(instruction, input_text=None):
-    """For Qwen2.5-7B-Instruct-1M, Qwen2.5-7B-Instruct"""
-    system_prompt = "You are a helpful assistant."
-
-    if input_text:
-        user_message = f"{instruction.strip()}\n\nInput:\n{input_text.strip()}"
-    else:
-        user_message = instruction.strip()
-
-    return f"""<|im_start|>system
-{system_prompt}<|im_end|>
-<|im_start|>user
-{user_message}<|im_end|>
-<|im_start|>assistant
-"""
-
-
-def generate_prompt_gemma(instruction, input_text=None):
-    """For gemma-3-4b-it, gemma-3-1b-it, gemma-7b (base)"""
-    prompt = "<|system|>\nYou are a helpful assistant.\n"
-
-    if input_text:
-        prompt += "<|user|>\n" + instruction.strip() + "\n\n### Input:\n" + input_text.strip() + "\n"
-    else:
-        prompt += "<|user|>\n" + instruction.strip() + "\n"
-
-    prompt += "<|assistant|>\n"
-    return prompt
-
-
-def generate_prompt_gemma7b_it(instruction, input_text=None):
-    """For gemma-7b-it (instruction-tuned)"""
-    if input_text:
-        prompt = (
-            f"<start_of_turn>user\n"
-            f"You are a helpful assistant.\n\n{instruction.strip()}\n\nInput:\n{input_text.strip()}<end_of_turn>\n"
-            f"<start_of_turn>model\n"
-        )
-    else:
-        prompt = (
-            f"<start_of_turn>user\n"
-            f"You are a helpful assistant.\n\n{instruction.strip()}<end_of_turn>\n"
-            f"<start_of_turn>model\n"
-        )
-    return prompt
-
-
-def generate_prompt_llama3(instruction, input_text=None):
-    """For Meta-Llama-3-8B-Instruct"""
-    if input_text:
-        formatted_prompt = (
-            f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n"
-            f"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Input:\n{input_text}\n\n### Response:\n"
-            f"<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-        )
-    else:
-        formatted_prompt = (
-            f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n"
-            f"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Response:\n"
-            f"<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-        )
-    return formatted_prompt
-
-
-def generate_prompt(instruction, input_text=None, model_name="LLaMA-7B"):
-    """Unified prompt generation based on model type"""
-    if model_name in ("LLaMA-7B", "LLaMA-13B", "BLOOM-7B", "GPT-j-6B"):
-        return generate_prompt_legacy(instruction, input_text)
-    elif model_name in ("Qwen2.5-7B-Instruct-1M", "Qwen2.5-7B-Instruct", "qwen2.5-7b-instruct"):
-        return generate_prompt_qwen(instruction, input_text)
-    elif model_name in ("gemma-3-4b-it", "gemma-3-1b-it", "gemma-7b"):
-        return generate_prompt_gemma(instruction, input_text)
-    elif model_name == "gemma-7b-it":
-        return generate_prompt_gemma7b_it(instruction, input_text)
-    elif model_name in ("Meta-Llama-3-8B-Instruct", "llama-3-8b-instruct"):
-        return generate_prompt_llama3(instruction, input_text)
-    else:
-        raise ValueError(f"Unknown model: {model_name}")
-
-
-# =============================================================================
-# Output Parsing
-# =============================================================================
-
-def parse_output(output, model_name):
-    """Parse model output based on model type"""
-    try:
-        if model_name in ("LLaMA-7B", "LLaMA-13B", "BLOOM-7B", "GPT-j-6B"):
-            return output.split("### Response:")[1].strip()
-        elif model_name in ("Qwen2.5-7B-Instruct-1M", "Qwen2.5-7B-Instruct", "qwen2.5-7b-instruct"):
-            return output.split("assistant\n", 1)[1].strip()
-        elif model_name in ("gemma-3-4b-it", "gemma-3-1b-it", "gemma-7b"):
-            return output.split("<|assistant|>", 1)[1].split("<|end|>")[0].strip()
-        elif model_name == "gemma-7b-it":
-            if "<start_of_turn>model" in output:
-                return output.split("<start_of_turn>model", 1)[1].split("<end_of_turn>")[0].strip()
-            return output.strip()
-        elif model_name in ("Meta-Llama-3-8B-Instruct", "llama-3-8b-instruct"):
-            return output.split("assistant\n\n", 1)[1].strip()
-        else:
-            return output.strip()
-    except (IndexError, AttributeError):
-        return output.strip()
-
-
-# =============================================================================
-# Model Loading
-# =============================================================================
-
-def load_model(args):
-    """Load model and tokenizer with proper configuration for each model type"""
-    base_model = args.base_model
-    if not base_model:
-        raise ValueError(f'Cannot find base model name: {args.model}')
-
-    lora_weights = args.lora_weights
-    if not lora_weights:
-        raise ValueError(f'Cannot find lora weight: {lora_weights}')
-
-    load_8bit = args.load_8bit
-
-    # Load tokenizer
-    if "LLaMA" in args.model and args.model in ("LLaMA-7B", "LLaMA-13B"):
-        tokenizer = LlamaTokenizer.from_pretrained(base_model)
-    else:
-        tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
-
-    # Set padding for decoder-only models (CRITICAL for batch inference)
-    decoder_only_models = (
-        "Meta-Llama-3-8B-Instruct",
-        "llama-3-8b-instruct",
-        "Qwen2.5-7B-Instruct-1M",
-        "Qwen2.5-7B-Instruct",
-        "qwen2.5-7b-instruct",
-        "gemma-3-1b-it",
-        "gemma-3-4b-it",
-        "gemma-7b",
-        "gemma-7b-it"
-    )
-    if args.model in decoder_only_models:
-        if tokenizer.pad_token is None:
-            tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.padding_side = "left"
-    else:
-        # Legacy models
-        tokenizer.padding_side = "left"
-        tokenizer.pad_token_id = 0  # unk
-
-    # Load model
-    if device == "cuda":
-        if args.model in ("gemma-3-1b-it", "gemma-3-4b-it"):
-            # Gemma 3 requires special handling
-            model = Gemma3ForConditionalGeneration.from_pretrained(
-                base_model,
-                device_map={"": 0},
-                attn_implementation='eager'
-            )
-            model = model.language_model
-            model.config.use_cache = False
-        else:
-            model = AutoModelForCausalLM.from_pretrained(
-                base_model,
-                load_in_8bit=load_8bit,
-                torch_dtype=torch.float16,
-                device_map="auto",
-                trust_remote_code=True,
-            )
-
-        model = PeftModel.from_pretrained(
-            model,
-            lora_weights,
-            torch_dtype=torch.float16,
-            device_map={"": 0}
-        )
-    elif device == "mps":
-        model = AutoModelForCausalLM.from_pretrained(
-            base_model,
-            device_map={"": device},
-            torch_dtype=torch.float16,
-        )
-        model = PeftModel.from_pretrained(
-            model,
-            lora_weights,
-            device_map={"": device},
-            torch_dtype=torch.float16,
-        )
-    else:
-        model = AutoModelForCausalLM.from_pretrained(
-            base_model,
-            device_map={"": device},
-            low_cpu_mem_usage=True
-        )
-        model = PeftModel.from_pretrained(
-            model,
-            lora_weights,
-            device_map={"": device},
-        )
-
-        # Fix for some legacy configs
-        model.config.pad_token_id = tokenizer.pad_token_id = 0
-        model.config.bos_token_id = 1
-        model.config.eos_token_id = 2
-
-        if not load_8bit:
-            model.half()
-
-        model.eval()
-        if torch.__version__ >= "2" and sys.platform != "win32":
-            model = torch.compile(model)
-
-    return tokenizer, model
-
-
-# =============================================================================
-# Data Loading & Batching
-# =============================================================================
-
-def load_data(args):
-    """Load test dataset"""
-    file_path = f'dataset/{args.dataset}/test.json'
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Cannot find dataset file: {file_path}")
-    return json.load(open(file_path, 'r'))
-
-
-def create_batch(dataset, batch_size):
-    """Create batches from dataset"""
-    batches = []
-    num_batch = len(dataset) // batch_size + (1 if len(dataset) % batch_size != 0 else 0)
-    for i in range(num_batch):
-        batch = dataset[i * batch_size: min((i + 1) * batch_size, len(dataset))]
-        batches.append(batch)
-    return batches
-
-
-def create_dir(dir_path):
-    """Create directory if not exists"""
-    if not os.path.exists(dir_path):
-        os.mkdir(dir_path)
-
-
-# =============================================================================
-# Answer Extraction
-# =============================================================================
-
-def extract_answer(args, sentence):
-    """Extract answer from model output based on dataset type"""
-    dataset = args.dataset
-    sentence_ = sentence.strip().lower()
-
-    if dataset == 'boolq':
-        pred_answers = re.findall(r'true|false', sentence_)
-        return pred_answers[0] if pred_answers else ""
-
-    elif dataset == 'piqa':
-        pred_answers = re.findall(r'solution1|solution2', sentence_)
-        return pred_answers[0] if pred_answers else ""
-
-    elif dataset in ['social_i_qa', 'ARC-Challenge', 'ARC-Easy', 'openbookqa']:
-        pred_answers = re.findall(r'answer1|answer2|answer3|answer4|answer5', sentence_)
-        return pred_answers[0] if pred_answers else ""
-
-    elif dataset == 'hellaswag':
-        pred_answers = re.findall(r'ending1|ending2|ending3|ending4', sentence_)
-        return pred_answers[0] if pred_answers else ""
-
-    elif dataset == 'winogrande':
-        pred_answers = re.findall(r'option1|option2', sentence_)
-        return pred_answers[0] if pred_answers else ""
-
-    return ""
-
-
-# =============================================================================
-# Argument Parsing
-# =============================================================================
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Unified Commonsense Evaluation")
-
-    parser.add_argument('--dataset',
-                        choices=["boolq", "piqa", "social_i_qa", "hellaswag",
-                                 "winogrande", "ARC-Challenge", "ARC-Easy", "openbookqa"],
-                        required=True,
-                        help="Evaluation dataset")
-
-    parser.add_argument('--model',
-                        choices=['LLaMA-7B', 'LLaMA-13B', 'BLOOM-7B', 'GPT-j-6B',
-                                 'Qwen2.5-7B-Instruct-1M', 'Qwen2.5-7B-Instruct',
-                                 'qwen2.5-7b-instruct',  # alias
-                                 'gemma-3-1b-it', 'gemma-3-4b-it', 'gemma-7b', 'gemma-7b-it',
-                                 'Meta-Llama-3-8B-Instruct', 'llama-3-8b-instruct'],  # alias
-                        required=True,
-                        help="Model type")
-
-    parser.add_argument('--adapter',
-                        choices=['No', 'LoRA', 'AdapterP', 'AdapterH', 'Parallel'],
-                        required=True,
-                        help="Adapter type")
-
-    parser.add_argument('--base_model', required=True, help="Base model path or name")
-    parser.add_argument('--lora_weights', required=True, help="LoRA weights path")
-    parser.add_argument('--batch_size', type=int, required=True, help="Batch size for evaluation")
-
-    # Extended arguments (optional for legacy compatibility)
-    parser.add_argument('--rank', type=int, default=32, help="LoRA rank")
-    parser.add_argument('--lora_type', default='std', help="LoRA type")
-    parser.add_argument('--lora_alpha', default='64', help="LoRA alpha")
-    parser.add_argument('--use_dora', action="store_true", help="Use DoRA")
-    parser.add_argument('--load_8bit', action='store_true', default=False, help="Load in 8bit")
-
-    return parser.parse_args()
-
-
-# =============================================================================
-# Main Evaluation
-# =============================================================================
 
 def main():
     args = parse_args()
 
-    # Load model and tokenizer
-    tokenizer, model = load_model(args)
+    if args.model not in SUPPORTED_MODELS:
+        raise ValueError(f"Unsupported model: {args.model}")
+    if args.batch_size < 1:
+        raise ValueError("--batch_size must be at least 1")
 
-    # Setup save file
-    if args.use_dora:
-        save_file = f'experiment/{args.model}-dora-{args.dataset}-{args.rank}-{args.lora_type}-{args.lora_alpha}.json'
-    else:
-        save_file = f'experiment/{args.model}-{args.adapter}-{args.dataset}-{args.rank}-{args.lora_type}-{args.lora_alpha}.json'
-    create_dir('experiment/')
-
-    # Load data
     dataset = load_data(args)
-    batches = create_batch(dataset, args.batch_size)
+    if not dataset:
+        raise ValueError(f"Evaluation dataset is empty: dataset/{args.dataset}/test.json")
 
-    def evaluate(instructions, input_text=None, num_beams=4, max_new_tokens=32):
-        """Run evaluation on a batch of instructions"""
-        prompts = [generate_prompt(inst, input_text, args.model) for inst in instructions]
-        inputs = tokenizer(prompts, return_tensors="pt", padding=True)
-        inputs["input_ids"] = inputs["input_ids"].to(device)
-        inputs["attention_mask"] = inputs["attention_mask"].to(device)
+    tokenizer, model = load_model(args)
+    create_dir("experiment/")
 
-        generation_config = GenerationConfig(num_beams=num_beams)
+    if args.use_dora:
+        save_file = (
+            f"experiment/{args.model}-dora-{args.dataset}-{args.rank}-"
+            f"{args.lora_type}-{args.lora_alpha}-{args.run}.json"
+        )
+    else:
+        save_file = (
+            f"experiment/{args.model}-{args.adapter}-{args.dataset}-{args.rank}-"
+            f"{args.lora_type}-{args.lora_alpha}-{args.run}.json"
+        )
 
-        # Set generation config tokens
-        generation_config.pad_token_id = tokenizer.pad_token_id
-        generation_config.eos_token_id = tokenizer.eos_token_id
-        generation_config.bos_token_id = tokenizer.bos_token_id
+    total = len(dataset)
+    correct = 0
+    output_data = []
+    progress = tqdm(total=total, desc=f"Evaluating {args.dataset}")
 
-        # For Gemma models, set cache implementation
-        if hasattr(model.config, 'cache_implementation'):
-            generation_config.cache_implementation = model.config.cache_implementation
+    def format_eval_prompt(prompt):
+        """Apply the native Gemma 3 chat template; other prompts are preformatted."""
+        if args.model == "gemma-3-4b-it":
+            return tokenizer.apply_chat_template(
+                prompt,
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+        return prompt
 
+    def build_generation_config(num_beams=4, **kwargs):
+        config_kwargs = {
+            "num_beams": num_beams,
+            "do_sample": False,
+            "pad_token_id": tokenizer.pad_token_id,
+            "eos_token_id": tokenizer.eos_token_id,
+        }
+
+        if args.model == "Meta-Llama-3-8B-Instruct":
+            config_kwargs["bos_token_id"] = tokenizer.bos_token_id
+        elif args.model == "gemma-3-4b-it":
+            config_kwargs["bos_token_id"] = tokenizer.bos_token_id
+            end_of_turn_id = tokenizer.convert_tokens_to_ids("<end_of_turn>")
+            if end_of_turn_id is not None:
+                config_kwargs["eos_token_id"] = [tokenizer.eos_token_id, end_of_turn_id]
+            config_kwargs["cache_implementation"] = "hybrid"
+
+        config_kwargs.update(kwargs)
+        return GenerationConfig(**config_kwargs)
+
+    def decode_generated(generation_output, input_length):
+        decoded = []
+        for sequence in generation_output.sequences:
+            new_tokens = sequence[input_length:]
+            decoded.append(
+                tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+            )
+        return decoded
+
+    def evaluate_one(instruction, input_text=None, num_beams=4, max_new_tokens=512):
+        prompt = generate_prompt(instruction, input_text, args.model)
+        formatted_prompt = format_eval_prompt(prompt)
+        model_inputs = tokenizer(
+            formatted_prompt,
+            return_tensors="pt",
+            add_special_tokens=False,
+        ).to(DEVICE)
+
+        generation_config = build_generation_config(num_beams=num_beams)
         with torch.no_grad():
             generation_output = model.generate(
-                **inputs,
+                **model_inputs,
                 generation_config=generation_config,
+                use_model_defaults=False,
                 return_dict_in_generate=True,
                 output_scores=True,
                 max_new_tokens=max_new_tokens,
             )
 
-        sequences = generation_output.sequences
-        outputs = tokenizer.batch_decode(sequences, skip_special_tokens=True)
+        input_length = model_inputs["input_ids"].shape[1]
+        return decode_generated(generation_output, input_length)[0]
 
-        # Parse outputs based on model type
-        outputs = [parse_output(o, args.model) for o in outputs]
+    def evaluate_batch(
+        instructions,
+        input_texts=None,
+        num_beams=4,
+        max_new_tokens=512,
+    ):
+        if input_texts is None:
+            input_texts = [None] * len(instructions)
+        if len(instructions) != len(input_texts):
+            raise ValueError(
+                "instructions and input_texts must have the same length; "
+                f"got {len(instructions)} and {len(input_texts)}"
+            )
 
-        return outputs
+        prompts = [
+            format_eval_prompt(generate_prompt(instruction, input_text, args.model))
+            for instruction, input_text in zip(instructions, input_texts)
+        ]
+        model_inputs = tokenizer(
+            prompts,
+            return_tensors="pt",
+            padding=True,
+            add_special_tokens=False,
+        ).to(DEVICE)
 
-    # Run evaluation
-    total = len(batches)
-    correct = 0
-    current = 0
-    output_data = []
+        generation_config = build_generation_config(num_beams=num_beams)
+        with torch.no_grad():
+            generation_output = model.generate(
+                **model_inputs,
+                generation_config=generation_config,
+                use_model_defaults=False,
+                return_dict_in_generate=True,
+                output_scores=True,
+                max_new_tokens=max_new_tokens,
+            )
 
-    pbar = tqdm(total=total)
-    for idx, batch in enumerate(batches):
-        current += len(batch)
-        instructions = [data.get('instruction') for data in batch]
+        input_length = model_inputs["input_ids"].shape[1]
+        return decode_generated(generation_output, input_length)
 
-        outputs = evaluate(instructions)
+    def record_prediction(item, output, index):
+        nonlocal correct
+        label = item.get("answer", "")
+        prediction = extract_answer(args, output)
+        label_normalized = str(label).strip().lower()
+        flag = label_normalized == prediction
+        if flag:
+            correct += 1
 
-        for data, output in zip(batch, outputs):
-            label = data.get('answer')
-            predict = extract_answer(args, output)
-            flag = (label == predict)
+        record = copy.deepcopy(item)
+        record["output_pred"] = output
+        record["pred"] = prediction
+        record["flag"] = flag
+        record["accuracy"] = correct / (index + 1)
+        output_data.append(record)
 
-            if flag:
-                correct += 1
+        print("\n---------------")
+        print("instruction:", item.get("instruction", ""))
+        print("output:", output)
+        print("prediction:", prediction)
+        print("label:", label)
+        print("---------------")
+        print(
+            f"test:{index + 1}/{total} | correct {correct} | "
+            f"accuracy {correct / (index + 1):.6f}"
+        )
 
-            new_data = copy.deepcopy(data)
-            new_data['output_pred'] = output
-            new_data['pred'] = predict
-            new_data['flag'] = flag
-            new_data['accuracy'] = correct / current
-            output_data.append(new_data)
+    try:
+        batch_size = args.batch_size
+        for batch_start in range(0, total, batch_size):
+            batch_end = min(batch_start + batch_size, total)
+            batch_data = dataset[batch_start:batch_end]
+            instructions = [item.get("instruction", "") for item in batch_data]
+            input_texts = [item.get("input") for item in batch_data]
 
-            print(data["instruction"])
-            print(output)
-            print('prediction:', predict)
-            print('label:', label)
+            if batch_size == 1:
+                outputs = [evaluate_one(instructions[0], input_texts[0])]
+            else:
+                outputs = evaluate_batch(instructions, input_texts)
 
-        print('---------------')
-        print(f'\rtest:{idx + 1}/{total} | accuracy {correct}  {correct / current}')
-        print('---------------')
+            if len(outputs) != len(batch_data):
+                raise RuntimeError(
+                    f"Model returned {len(outputs)} outputs for "
+                    f"{len(batch_data)} examples in the batch"
+                )
 
-        with open(save_file, 'w+') as f:
-            json.dump(output_data, f, indent=4)
+            for offset, (item, output) in enumerate(zip(batch_data, outputs)):
+                record_prediction(item, output, batch_start + offset)
+                progress.update(1)
 
-        pbar.update(1)
+            # Save after every completed batch so interrupted runs keep progress.
+            with open(save_file, "w", encoding="utf-8") as file:
+                json.dump(output_data, file, indent=4, ensure_ascii=False)
+    finally:
+        progress.close()
 
-    pbar.close()
-    print('\n')
-    print('test finished')
-    print(f'Final accuracy: {correct / current:.4f}')
+    print(f"\nTest finished. Accuracy: {correct / total:.6f}")
+    print(f"Predictions saved to: {save_file}")
+
+
+def create_dir(path):
+    os.makedirs(path, exist_ok=True)
+
+
+def generate_prompt(instruction, input_text=None, model_name="Qwen2.5-7B-Instruct-1M"):
+
+    if model_name == "Qwen2.5-7B-Instruct-1M":
+        system_prompt = "You are a helpful assistant."
+        if input_text:
+            user_message = f"{instruction.strip()}\n\nInput:\n{input_text.strip()}"
+        else:
+            user_message = instruction.strip()
+        return (
+            f"<|im_start|>system\n{system_prompt}<|im_end|>\n"
+            f"<|im_start|>user\n{user_message}<|im_end|>\n"
+            f"<|im_start|>assistant\n"
+        )
+
+    if model_name == "gemma-3-4b-it":
+        if input_text:
+            user_message = f"{instruction.strip()}\n\nInput:\n{input_text.strip()}"
+        else:
+            user_message = instruction.strip()
+        return [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_message},
+        ]
+
+    if model_name == "Meta-Llama-3-8B-Instruct":
+        if input_text:
+            return (
+                "<|begin_of_text|>"
+                "<|start_header_id|>user<|end_header_id|>\n\n"
+                "Below is an instruction that describes a task. "
+                "Write a response that appropriately completes the request.\n\n"
+                f"### Instruction:\n{instruction}\n\n"
+                f"### Input:\n{input_text}\n\n"
+                "### Response:\n"
+                "<|eot_id|>"
+                "<|start_header_id|>assistant<|end_header_id|>\n\n"
+            )
+        return (
+            "<|begin_of_text|>"
+            "<|start_header_id|>user<|end_header_id|>\n\n"
+            "Below is an instruction that describes a task. "
+            "Write a response that appropriately completes the request.\n\n"
+            f"### Instruction:\n{instruction}\n\n"
+            "### Response:\n"
+            "<|eot_id|>"
+            "<|start_header_id|>assistant<|end_header_id|>\n\n"
+        )
+
+    raise ValueError(f"Unsupported model: {model_name}")
+
+
+def load_data(args):
+    file_path = f"dataset/{args.dataset}/test.json"
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Cannot find dataset file: {file_path}")
+    with open(file_path, "r", encoding="utf-8") as file:
+        dataset = json.load(file)
+    if not isinstance(dataset, list):
+        raise TypeError(f"Expected a JSON list in {file_path}")
+    return dataset
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Commonsense evaluation aligned with the current math evaluator."
+    )
+    parser.add_argument("--dataset", choices=sorted(SUPPORTED_DATASETS), required=True)
+    parser.add_argument("--model", choices=sorted(SUPPORTED_MODELS), required=True)
+    parser.add_argument(
+        "--adapter",
+        choices=["No", "LoRA", "AdapterP", "AdapterH", "Parallel"],
+        required=True,
+    )
+    parser.add_argument("--base_model", required=True)
+    parser.add_argument("--rank", type=int, required=True)
+    parser.add_argument("--lora_weights", default="", help="Adapter checkpoint; not needed with --adapter No.")
+    parser.add_argument("--lora_type", required=True)
+    parser.add_argument("--lora_alpha", required=True)
+    parser.add_argument("--run", default="1", help="Run identifier for the output filename.")
+    parser.add_argument("--use_dora", action="store_true")
+    parser.add_argument(
+        "--batch_size", type=int, default=1,
+        help="Inference batch size; use 1 for canonical single-example evaluation.",
+    )
+    return parser.parse_args()
+
+
+def load_model(args):
+    if not args.base_model:
+        raise ValueError(f"Missing base model for {args.model}")
+    if args.adapter != "No" and not args.lora_weights:
+        raise ValueError("--lora_weights must identify the adapter checkpoint unless --adapter No is used")
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        args.base_model,
+        trust_remote_code=True,
+        token=HF_TOKEN,
+    )
+
+    if args.model == "Meta-Llama-3-8B-Instruct":
+        tokenizer.pad_token = tokenizer.eos_token
+
+    tokenizer.padding_side = "left" if args.batch_size > 1 else "right"
+
+    if DEVICE == "cuda":
+        if args.model == "gemma-3-4b-it":
+            base = Gemma3ForCausalLM.from_pretrained(
+                args.base_model,
+                torch_dtype=torch.bfloat16,
+                device_map={"": 0},
+                trust_remote_code=True,
+                token=HF_TOKEN,
+                attn_implementation="eager",
+            )
+        else:
+            base = AutoModelForCausalLM.from_pretrained(
+                args.base_model,
+                torch_dtype=torch.bfloat16,
+                device_map={"": 0},
+                trust_remote_code=True,
+                token=HF_TOKEN,
+                attn_implementation="flash_attention_2",
+            )
+    else:
+        if args.model == "gemma-3-4b-it":
+            base = Gemma3ForCausalLM.from_pretrained(
+                args.base_model,
+                device_map={"": DEVICE},
+                trust_remote_code=True,
+                token=HF_TOKEN,
+            )
+        else:
+            base = AutoModelForCausalLM.from_pretrained(
+                args.base_model,
+                device_map={"": DEVICE},
+                trust_remote_code=True,
+                token=HF_TOKEN,
+            )
+
+    if args.adapter == "No":
+        model = base
+    else:
+        model = PeftModel.from_pretrained(
+            base,
+            args.lora_weights,
+            torch_dtype=torch.bfloat16 if DEVICE == "cuda" else None,
+            device_map={"": 0 if DEVICE == "cuda" else DEVICE},
+        )
+
+    model.eval()
+    return tokenizer, model
+
+
+def extract_answer(args, sentence):
+
+    patterns = {
+        "boolq": r"\b(?:true|false)\b",
+        "piqa": r"\b(?:solution1|solution2)\b",
+        "social_i_qa": r"\b(?:answer1|answer2|answer3|answer4|answer5)\b",
+        "arc-challenge": r"\b(?:answer1|answer2|answer3|answer4|answer5)\b",
+        "arc-easy": r"\b(?:answer1|answer2|answer3|answer4|answer5)\b",
+        "openbookqa": r"\b(?:answer1|answer2|answer3|answer4|answer5)\b",
+        "hellaswag": r"\b(?:ending1|ending2|ending3|ending4)\b",
+        "winogrande": r"\b(?:option1|option2)\b",
+    }
+    dataset_name = args.dataset.lower()
+    pattern = patterns.get(dataset_name)
+    if pattern is None:
+        raise NotImplementedError(f"Unsupported commonsense dataset: {args.dataset}")
+    matches = re.findall(pattern, sentence, flags=re.IGNORECASE)
+    return matches[0].lower() if matches else ""
 
 
 if __name__ == "__main__":

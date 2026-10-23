@@ -1,0 +1,127 @@
+# ==========================================
+# Python caches and test artifacts
+# ==========================================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.tox/
+.nox/
+
+# ==========================================
+# Experiments, logs, and generated results
+# ==========================================
+experiment/
+experiments/
+hyp_analysis/
+logs/
+runs/
+wandb/
+token_frequency/
+token_norm_plots/
+*.log
+slurm-*.out
+*.err
+
+# ==========================================
+# Trained models and checkpoint artifacts
+# ==========================================
+trained_models/
+checkpoints/
+outputs/
+checkpoint-*/
+hf_release_staging/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+optimizer.pt
+scheduler.pt
+training_args.bin
+rng_state*.pth
+
+# ==========================================
+# Dataset and model caches
+# ==========================================
+.cache/
+.huggingface/
+hf_cache/
+datasets_cache/
+data_cache/
+
+# ==========================================
+# Compiled extensions and build artifacts
+# Keep .cpp and .cu source files tracked.
+# ==========================================
+build/
+dist/
+*.egg-info/
+*.so
+*.o
+*.a
+*.cubin
+*.fatbin
+CMakeFiles/
+.ninja_log
+.ninja_deps
+
+# ==========================================
+# Temporary and editor files
+# ==========================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+.vscode/
+.idea/
+
+# ==========================================
+# Secrets and local environments
+# ==========================================
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Additional dataset and model caches
+hf_cache/
+datasets_cache/
+data_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.so
+*.o
+*.a
+
+# Temporary and editor files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets and local environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Local-only Hub smoke test
+smoke_test_hub_adapter.py

@@ -16,8 +16,7 @@
 # Reference paper: https://arxiv.org/abs/2406.05223
 
 import os
-from collections.abc import Iterable
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Iterable, Optional
 
 import torch
 import torch.nn as nn
