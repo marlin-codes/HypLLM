@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_NAME="hyplora"
+ENV_NAME="hyplora_test"
 PYTHON_VERSION="3.12"
 
 TORCH_VERSION="2.8.0"
@@ -23,6 +23,7 @@ TQDM_VERSION="4.67.1"
 FIRE_VERSION="0.7.1"
 WANDB_VERSION="0.22.2"
 PROTOBUF_VERSION="4.25.8"
+PYARROW_VERSION="25.0.0"
 
 PEFT_VERSION="0.15.2"
 
@@ -130,7 +131,8 @@ python -m pip install \
 MAX_JOBS="${MAX_JOBS:-4}" \
 python -m pip install \
     "flash-attn==$FLASH_ATTN_VERSION" \
-    --no-build-isolation
+    --no-build-isolation \
+    --no-cache-dir
 
 python - <<'PY'
 import flash_attn
@@ -149,6 +151,7 @@ python -m pip install --no-cache-dir \
     "accelerate==$ACCELERATE_VERSION" \
     "safetensors==$SAFETENSORS_VERSION" \
     "datasets==$DATASETS_VERSION" \
+    "pyarrow==$PYARROW_VERSION" \
     "huggingface-hub==$HUGGINGFACE_HUB_VERSION" \
     "tokenizers==$TOKENIZERS_VERSION" \
     "numpy==$NUMPY_VERSION" \
