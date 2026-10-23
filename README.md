@@ -1,4 +1,3 @@
-
 ## [Hyperbolic Fine-tuning for LLMs (PDF)](https://arxiv.org/abs/2410.04010)
 
 PyTorch Implementation for [Hyperbolic Fine-tuning for LLMs](https://arxiv.org/abs/2410.04010).
@@ -49,60 +48,146 @@ Check the code at [utils/token_norm_plot.py](./utils/token_norm_plot.py)
 
 ### 6. Setup
 
+Clone the HypLoRA repository and switch to the checkpoint release branch:
+
 ```bash
-# Install dependencies
+git clone --branch hf-checkpoint-v https://github.com/marlin-codes/HypLoRA.git
+cd HypLoRA
+```
+
+Create the Conda environment and install the required dependencies:
+
+```bash
 bash setup.sh
-
-# Activate environment
-conda activate adapter
-export PYTHONPATH=/path/to/HypLoRA/peft:$PYTHONPATH
-export HF_HOME=<your_huggingface_cache>
-export WANDB_DISABLED=true
+conda activate hyplora
 ```
 
-### 7. Running Scripts
+The setup script installs the pinned dependencies, including PyTorch, FlashAttention-2, Transformers, and PEFT. It then patches the installed PEFT package with the customized HypLoRA implementation and verifies that the correct files are being imported.
 
-Each model has its own `finetune.sh` and `eval.sh` under `scripts/`.
+The environment name is `hyplora`. Activate it before running training or evaluation scripts.
 
-#### Table 3 (Math: AQuA, mawps, SVAMP, gsm8k)
+### 7. Running Training and Evaluation Scripts
+
+We provide `finetune.sh` and `eval.sh` scripts for **HypLoRA** and **LoRA** on the following model families:
+
+- Llama 3-8B
+- Gemma 3-4B
+- Qwen 2.5-7B
+
+The scripts are organized according to the training dataset:
+
+| Script directory | Dataset | Purpose |
+|---|---|---|
+| `scripts/table3/` | Math-10K | Mathematical reasoning |
+| `scripts/table4/` | Commonsense-170K | Commonsense reasoning |
+
+Each method and model has its own directory containing `finetune.sh` and `eval.sh`.
+
+#### Table 3: Math-10K
+
+For example, to fine-tune HypLoRA on Math-10K using Llama 3-8B, navigate to the model-specific script directory:
 
 ```bash
-# Example: train and evaluate qwen with hyplora
-bash scripts/table3/hyplora/qwen2.5-7b/finetune.sh
-bash scripts/table3/hyplora/qwen2.5-7b/eval.sh
-
-# Available models: qwen2.5-7b, llama3-8b, gemma3-4b, gemma-7b
-# Available methods: hyplora, hyplora_simplified, lora
+cd scripts/table3/hyplora/llama3-8b/
 ```
 
-#### Table 4 (Commonsense: boolq, piqa, hellaswag, winogrande, ARC, openbookqa, social_iqa)
+Run fine-tuning:
 
 ```bash
-# Example: train and evaluate qwen with hyplora
-bash scripts/table4/hyplora/qwen2.5-7b/finetune.sh
-bash scripts/table4/hyplora/qwen2.5-7b/eval.sh
+bash finetune.sh
 ```
 
-### 8. Evaluation Batch Sizes
+After fine-tuning completes, run evaluation using the checkpoint configured in the corresponding `eval.sh`:
 
-Scripts default to batch_size=1 for maximum compatibility. To speed up evaluation on high-memory GPUs (e.g. H100 80GB), increase the batch size in the scripts:
+```bash
+bash eval.sh
+```
 
-#### Table 3 (Math)
+For standard LoRA, use the corresponding `lora` directory instead:
 
-| Dataset | Recommended |
-|---------|-------------|
-| AQuA | 5 |
-| mawps | 10 |
-| SVAMP | 10 |
-| gsm8k | 5 |
+```bash
+cd scripts/table3/lora/llama3-8b/
+bash finetune.sh
+bash eval.sh
+```
 
-#### Table 4 (Commonsense)
+The same structure applies to Gemma 3-4B and Qwen 2.5-7B.
 
-| Dataset | qwen/llama/gemma3 | gemma7 |
-|---------|-------------------|--------|
-| boolq, social_i_qa, winogrande, openbookqa | 100 | 50 |
-| piqa, ARC-Easy, ARC-Challenge | 40 | 30 |
-| hellaswag | 40 | 20 |
+The Table 3 evaluation scripts cover AQuA, MAWPS, SVAMP, and GSM8K.
+
+#### Table 4: Commonsense-170K
+
+To fine-tune HypLoRA on Commonsense-170K using Llama 3-8B:
+
+```bash
+cd scripts/table4/hyplora/llama3-8b/
+bash finetune.sh
+```
+
+Evaluate the fine-tuned checkpoint:
+
+```bash
+bash eval.sh
+```
+
+For standard LoRA, use:
+
+```bash
+cd scripts/table4/lora/llama3-8b/
+bash finetune.sh
+bash eval.sh
+```
+
+The same directory structure applies to Gemma 3-4B and Qwen 2.5-7B.
+
+The Table 4 evaluation scripts cover BoolQ, PIQA, SocialIQA, HellaSwag, WinoGrande, ARC-Challenge, ARC-Easy, and OpenBookQA.
+
+**Note:** The shell scripts determine the project root relative to their own locations. Run the commands from the corresponding model-specific directory as shown above. Check the configured output and checkpoint paths if you change the default training settings.
+
+### 8. Using Released HypLoRA Checkpoints
+
+We provide pretrained HypLoRA adapter checkpoints for Math-10K and Commonsense-170K. These are **PEFT adapter weights, not complete language models**. The corresponding base model and the HypLoRA implementation from this repository are required.
+
+#### Table 3: Math-10K Checkpoints
+
+| Base model | Hugging Face checkpoint |
+|---|---|
+| Llama 3-8B | [GGLabYale/hyplora-llama3-8b-math10k](https://huggingface.co/GGLabYale/hyplora-llama3-8b-math10k) |
+| Gemma 3-4B | [GGLabYale/hyplora-gemma3-4b-math10k](https://huggingface.co/GGLabYale/hyplora-gemma3-4b-math10k) |
+| Qwen 2.5-7B | [GGLabYale/hyplora-qwen25-7b-math10k](https://huggingface.co/GGLabYale/hyplora-qwen25-7b-math10k) |
+
+#### Table 4: Commonsense-170K Checkpoints
+
+| Base model | Hugging Face checkpoint |
+|---|---|
+| Llama 3-8B | [GGLabYale/hyplora-llama3-8b-commonsense170k](https://huggingface.co/GGLabYale/hyplora-llama3-8b-commonsense170k) |
+| Gemma 3-4B | [GGLabYale/hyplora-gemma3-4b-commonsense170k](https://huggingface.co/GGLabYale/hyplora-gemma3-4b-commonsense170k) |
+| Qwen 2.5-7B | [GGLabYale/hyplora-qwen25-7b-commonsense170k](https://huggingface.co/GGLabYale/hyplora-qwen25-7b-commonsense170k) |
+
+#### Evaluating with a Released Checkpoint
+
+To evaluate using one of our released adapters instead of a locally fine-tuned checkpoint:
+
+1. Navigate to the appropriate model-specific `eval.sh` directory.
+2. Locate the `--lora_weights` argument.
+3. Replace its local checkpoint path with the corresponding Hugging Face repository ID from the tables above.
+4. Run `bash eval.sh` from that directory.
+
+For example, to evaluate using the released Llama 3-8B Math-10K HypLoRA checkpoint, edit `scripts/table3/hyplora/llama3-8b/eval.sh` to use:
+
+```bash
+--lora_weights "GGLabYale/hyplora-llama3-8b-math10k"
+```
+
+Then run:
+
+```bash
+cd scripts/table3/hyplora/llama3-8b/
+bash eval.sh
+```
+
+For a locally fine-tuned checkpoint, keep `--lora_weights` pointed at the corresponding local checkpoint or output directory.
+
 
 ### BibTex
 ```

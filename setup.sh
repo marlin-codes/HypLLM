@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_NAME="hyplora_test"
+ENV_NAME="hyplora"
 PYTHON_VERSION="3.12"
 
 TORCH_VERSION="2.8.0"
